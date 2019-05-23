@@ -42,7 +42,9 @@ createBucket() {
   BUCKET=$1
   POLICY=$2
   PURGE=$3
-
+  
+  REGION = $(cat /config/region) ;
+  
   # Purge the bucket, if set & exists
   # Since PURGE is user input, check explicitly for `true`
   if [ $PURGE = true ]; then
@@ -58,8 +60,8 @@ createBucket() {
 
   # Create the bucket if it does not exist
   if ! checkBucketExists $BUCKET ; then
-    echo "Creating bucket '$BUCKET'"
-    /usr/bin/mc mb myminio/$BUCKET
+    echo "Creating bucket '$BUCKET' in region '$REGION'"
+    /usr/bin/mc mb --region $REGION myminio/$BUCKET
   else
     echo "Bucket '$BUCKET' already exists."
   fi
